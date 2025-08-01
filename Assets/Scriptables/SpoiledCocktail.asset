@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13779548a81b8e14496545e74f298fdf, type: 3}
+  m_Name: SpoiledCocktail
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: bf08835de55c7b7498b5b2073f909b6f, type: 3}
+  Recipe: []

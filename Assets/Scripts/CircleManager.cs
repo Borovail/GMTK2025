@@ -13,6 +13,7 @@ public class CircleManager : MonoBehaviour
     [SerializeField] private Barrier[] _barriers;
     [SerializeField] private Transform[] _customerPositions;
     [SerializeField] private int _customersOnSide;
+    [SerializeField] private CustomerData CustomerData;
 
     private List<Customer>[] _customers;
 
@@ -25,12 +26,13 @@ public class CircleManager : MonoBehaviour
         for (int i = 0; i < 2; i++)
             _customers[i] = new List<Customer>(_customersOnSide);
 
-        SpawnCustomer();
+        SpawnCustomer(CustomerData);
     }
 
-    private void SpawnCustomer()
+    private void SpawnCustomer(CustomerData customerData)
     {
         var customer = Instantiate(_customerPrefab, _customerPositions[_index].position, _customerPositions[_index].rotation);
+        customer.Initialize(customerData);
         _customers[_index].Add(customer);
         customer.Id = _customers[_index].IndexOf(customer);
         customer.OrderAccepted.AddListener(OnOrderAccepted);
@@ -62,10 +64,10 @@ public class CircleManager : MonoBehaviour
             var snapshot = _customers[i].ToList();
             snapshot.ForEach(customer => customer.DecreaseCircleCount());
         }
-        
+
         _circleCount++;
         if (_customers[_index].Count < _customersOnSide)
-            SpawnCustomer();
+            SpawnCustomer(CustomerData);
         else
             if (_customers[_index].All(c => c.IsOrderAccepted))
             _barriers[_index].SetTrigger(true);
