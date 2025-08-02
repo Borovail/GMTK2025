@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.Events;
 
-public class ResourceProvider : MonoBehaviour
+public class ResourceProvider : Lookable
 {
     public Resource Resource;
+    public bool IsTaken;
 }

@@ -13,6 +13,8 @@ public class UIDraggable : MonoBehaviour,
     [HideInInspector] public Vector3 PositionAfterDrag;
     [HideInInspector] public Resource Resource;
 
+    [HideInInspector] public bool IsDropSuccessful;
+
     public void Initialize(Resource resource)
     {
         Resource = resource;
@@ -56,5 +58,6 @@ public class UIDraggable : MonoBehaviour,
         var color = _image.color;
         color.a = 0;
         _image.color = color;
+        IsDropSuccessful = true;
     }
 }

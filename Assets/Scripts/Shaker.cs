@@ -10,17 +10,20 @@ public class Shaker : MonoBehaviour, IDropHandler, IPointerClickHandler
     [HideInInspector] public Cocktail Cocktail;
     private List<Resource> _resources = new();
 
-    private UIDraggable _draggable;
+    public UIDraggable Draggable;
+    public bool Shaked;
+
+    private Coroutine _coroutine;
 
     private void Awake()
     {
-        _draggable = GetComponent<UIDraggable>();
-        _draggable.enabled = false;
+        Draggable = GetComponent<UIDraggable>();
+        Draggable.enabled = false;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Right) return;
+        if (eventData.button != PointerEventData.InputButton.Left || eventData.button != PointerEventData.InputButton.Left) return;
 
         ShakeAnimation();
     }
@@ -30,11 +33,13 @@ public class Shaker : MonoBehaviour, IDropHandler, IPointerClickHandler
         var draggable = eventData.pointerDrag.GetComponent<UIDraggable>();
         _resources.Add(draggable.Resource);
         draggable.DropSuccessful();
+        Shaked = false;
     }
 
     public void ShakeAnimation(float duration = 1f, float magnitude = 0.05f)
     {
-        StartCoroutine(ShakeCoroutine(duration, magnitude));
+        if(!Shaked && _coroutine==null)
+        _coroutine = StartCoroutine(ShakeCoroutine(duration, magnitude));
     }
 
     private IEnumerator ShakeCoroutine(float duration, float magnitude)
@@ -67,6 +72,8 @@ public class Shaker : MonoBehaviour, IDropHandler, IPointerClickHandler
     {
         Cocktail = _cocktails.FirstOrDefault(c => new HashSet<Resource>(_resources).SetEquals(c.Recipe));
         if (Cocktail == null) Cocktail = _cocktails[0];
-        _draggable.enabled = true;
+        Draggable.enabled = true;
+        Shaked = true;
+        _coroutine = null;
     }
 }

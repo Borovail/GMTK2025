@@ -16,6 +16,7 @@ public class CustomerUI : MonoBehaviour, IDropHandler
         var glass = eventData.pointerDrag.GetComponent<Glass>();
         glass.Reset();
         _customer.CompleteOrder(glass.Cocktail);
+        glass.Draggable.IsDropSuccessful = true;
     }
 
 }

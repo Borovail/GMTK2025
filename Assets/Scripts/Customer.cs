@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class Customer : MonoBehaviour
+public class Customer : Lookable
 {
     [SerializeField] private int _circlesCount = 3;
     [SerializeField] private Text _circleCounterUi;
@@ -27,12 +27,13 @@ public class Customer : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _circleCounterUi.gameObject.SetActive(false);
     }
     public Sprite GetSprite() => _spriteRenderer.sprite;
 
+
     public void AcceptOrder()
     {
+        _cocktailImage.transform.SetParent(_circleCounterUi.transform.parent);
         _circleCounterUi.gameObject.SetActive(true);
         _circleCounterUi.text = _circlesCount.ToString();
         OrderAccepted?.Invoke();

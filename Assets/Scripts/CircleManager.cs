@@ -7,7 +7,7 @@ using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CircleManager : MonoBehaviour
+public class CircleManager : Singleton<CircleManager>
 {
     [SerializeField] private Customer _customerPrefab;
     [SerializeField] private Barrier[] _barriers;
@@ -15,13 +15,17 @@ public class CircleManager : MonoBehaviour
     [SerializeField] private int _customersOnSide;
     [SerializeField] private CustomerData CustomerData;
 
-    private List<Customer>[] _customers;
+    [SerializeField] private List<Customer>[] _customers;
 
     private int _circleCount;
     private int _index => Convert.ToInt32(_circleCount % 2 != 0);
 
-    private void Start()
+    public Customer GetPendingOrderCustomer() =>
+     _customers[_index].FirstOrDefault(c => c.IsOrderAccepted == false);
+
+    protected override void Awake()
     {
+        base.Awake();
         _customers = new List<Customer>[2];
         for (int i = 0; i < 2; i++)
             _customers[i] = new List<Customer>(_customersOnSide);
@@ -50,6 +54,11 @@ public class CircleManager : MonoBehaviour
     private void OnOrderAccepted()
     {
         _barriers[_index].SetTrigger(true);
+    }
+
+    public void SetBarrier(bool value)
+    {
+        _barriers[_index].SetTrigger(value);
     }
 
     private void OnEnable()
