@@ -14,8 +14,21 @@ public class CollectIngredientsTutorial : ArrowTutorialStep
     {
         _resourceProviders = resourceProviders;
         Obj = _resourceProviders[index++];
-        ArrowPosition = Obj.transform.position + Vector3.up;
-        Text = $"Press {index} button to take ingredient";
+        ArrowPosition = Obj.transform.position + new Vector3(0, 0, 1);
+        ArrowRotation = Quaternion.Euler(0, 90, 90);
+        TextForCurrentAction = $"Press {index} button to take ingredient";
+    }
+
+    public override void StartStep()
+    {
+        Obj.gameObject.SetActive(true);
+        base.StartStep();
+    }
+
+    public override void EndStep()
+    {
+        Obj.gameObject.SetActive(false);
+        base.EndStep();
     }
 
     public override bool IsStepCompleted()
@@ -24,8 +37,10 @@ public class CollectIngredientsTutorial : ArrowTutorialStep
         {
             EndStep();
             Obj = _resourceProviders[index++];
-            Text = $"Press {index} button to take ingredient";
-            ArrowPosition = Obj.transform.position + Vector3.up;
+            TextForCurrentAction = $"Press {index} button to take ingredient";
+            ArrowPosition = Obj.transform.position + new Vector3(0, 0, -1);
+            ArrowRotation = Quaternion.Euler(0, -90, 90);
+            TextForNextAction = "Go to customer";
             StartStep();
             return false;
         }

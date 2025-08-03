@@ -1,25 +1,27 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Barrier : MonoBehaviour
 {
-    public UnityEvent Exited;
+    [HideInInspector] public UnityEvent Exited;
     private BoxCollider _сollider;
     private float _enter;
+    private ParticleSystem _fog;
     private void Awake()
     {
         _сollider = GetComponent<BoxCollider>();
-    }
-
-
-    private void Update()
-    {
-        GetComponent<MeshRenderer>().enabled = _сollider.isTrigger;
+        _fog = GetComponentInChildren<ParticleSystem>();
     }
 
     public void SetTrigger(bool value)
     {
+        Debug.Log(value);
         _сollider.isTrigger = value;
+        if (!value)
+            _fog.Play();
+        else
+            _fog.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
 
@@ -36,8 +38,7 @@ public class Barrier : MonoBehaviour
 
         if (exit * _enter >= 0) return;
 
-        Debug.Log("Выход");
-        _сollider.isTrigger = false;
+        SetTrigger(false);
         Exited?.Invoke();
     }
 

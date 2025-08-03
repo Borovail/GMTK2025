@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,11 +12,13 @@ public class CircleManager : Singleton<CircleManager>
 {
     [SerializeField] private Customer _customerPrefab;
     [SerializeField] private Barrier[] _barriers;
-    [SerializeField] private Transform[] _customerPositions;
-    [SerializeField] private int _customersOnSide;
-    [SerializeField] private CustomerData CustomerData;
-
+    [SerializeField] private List<Transform> _customerPositions;
+    [SerializeField] private int _customersOnSide = 5;
+    [SerializeField] private List<CustomerData> CustomerData;
     [SerializeField] private List<Customer>[] _customers;
+    public int MaxCustomersCount = 20;
+    public int CustomersCount;
+    public int CustomersServed;
 
     private int _circleCount;
     private int _index => Convert.ToInt32(_circleCount % 2 != 0);
@@ -27,20 +30,25 @@ public class CircleManager : Singleton<CircleManager>
     {
         base.Awake();
         _customers = new List<Customer>[2];
-        for (int i = 0; i < 2; i++)
-            _customers[i] = new List<Customer>(_customersOnSide);
 
-        SpawnCustomer(CustomerData);
+        for (int i = 0; i < _customers.Length; i++)
+            _customers[i] = new List<Customer>();
+
+        SpawnCustomer(CustomerData[0]);
     }
+
 
     private void SpawnCustomer(CustomerData customerData)
     {
-        var customer = Instantiate(_customerPrefab, _customerPositions[_index].position, _customerPositions[_index].rotation);
-        customer.Initialize(customerData);
+        var index = _customerPositions.Count / 2 * _index + _customers[_index].Count;
+        var customer = Instantiate(_customerPrefab, _customerPositions[index].position, _customerPositions[index].rotation);
+        customer.Initialize(customerData, 3);
+        customer.AddComponent<BoxCollider>();
         _customers[_index].Add(customer);
         customer.Id = _customers[_index].IndexOf(customer);
         customer.OrderAccepted.AddListener(OnOrderAccepted);
         customer.OrderCompleted.AddListener(OnOrderCompleted);
+        CustomersCount++;
     }
 
     private void OnOrderCompleted(int Id)
@@ -49,6 +57,9 @@ public class CircleManager : Singleton<CircleManager>
         customer.OrderAccepted.RemoveListener(OnOrderAccepted);
         customer.OrderCompleted.RemoveListener(OnOrderCompleted);
         _customers[_index].RemoveAt(Id);
+        CustomersServed++;
+        if (CustomersCount == MaxCustomersCount)
+            PlayerUI.Instance.ShowEndMenu();
     }
 
     private void OnOrderAccepted()
@@ -75,10 +86,20 @@ public class CircleManager : Singleton<CircleManager>
         }
 
         _circleCount++;
-        if (_customers[_index].Count < _customersOnSide)
-            SpawnCustomer(CustomerData);
+        SpawnCustomers();
+    }
+
+    private void SpawnCustomers()
+    {
+
+        if (_customers[_index].Count < _customersOnSide && CustomersCount < MaxCustomersCount)
+        {
+            var bound = UnityEngine.Random.Range(1, 4);
+            for (int i = 0; i < bound; i++)
+                SpawnCustomer(CustomerData[UnityEngine.Random.Range(0, CustomerData.Count)]);
+        }
         else
-            if (_customers[_index].All(c => c.IsOrderAccepted))
+           if (_customers[_index].All(c => c.IsOrderAccepted))
             _barriers[_index].SetTrigger(true);
     }
 

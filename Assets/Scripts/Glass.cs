@@ -7,7 +7,7 @@ public class Glass : MonoBehaviour, IDropHandler
     [SerializeField] private Sprite _defaultSprite;
     [HideInInspector] public Cocktail Cocktail;
     private Image _image;
-    public UIDraggable Draggable;
+    [HideInInspector] public UIDraggable Draggable;
 
 
     private void Awake()
@@ -23,9 +23,11 @@ public class Glass : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        var shaker = eventData.pointerDrag.GetComponent<Shaker>();
-        Cocktail = shaker.Cocktail;
-        _image.sprite = Cocktail.sprite;
-        shaker.Draggable.IsDropSuccessful = true;
+        if (eventData.pointerDrag.TryGetComponent<Shaker>(out var shaker))
+        {
+            Cocktail = shaker.Cocktail;
+            _image.sprite = Cocktail.sprite;
+            shaker.Draggable.IsDropSuccessful = true;
+        }
     }
 }

@@ -15,7 +15,7 @@ public class Pulse : MonoBehaviour
 
     private Tween pulseTween;
 
-    private void OnEnable()
+    private void Start()
     {
         pulseTween = transform
             .DOScale(transform.localScale * pulseScale, pulseDuration / 2f)
@@ -23,8 +23,10 @@ public class Pulse : MonoBehaviour
             .SetLoops(-1, LoopType.Yoyo);
     }
 
-    private void OnDisable()
+    void OnDestroy()
     {
         pulseTween.Kill();
+
     }
+
 }

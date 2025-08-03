@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -17,8 +18,9 @@ public class Customer : Lookable
     private Cocktail _cocktail;
     private SpriteRenderer _spriteRenderer;
 
-    public void Initialize(CustomerData customerData)
+    public void Initialize(CustomerData customerData, int circlesCount)
     {
+        _circlesCount = circlesCount;
         _spriteRenderer.sprite = customerData.Sprite;
         _cocktail = customerData.Cocktail;
         _cocktailImage.sprite = _cocktail.sprite;
@@ -33,7 +35,7 @@ public class Customer : Lookable
 
     public void AcceptOrder()
     {
-        _cocktailImage.transform.SetParent(_circleCounterUi.transform.parent);
+        _cocktailImage.gameObject.SetActive(true);
         _circleCounterUi.gameObject.SetActive(true);
         _circleCounterUi.text = _circlesCount.ToString();
         OrderAccepted?.Invoke();

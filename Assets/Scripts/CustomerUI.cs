@@ -13,10 +13,12 @@ public class CustomerUI : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        var glass = eventData.pointerDrag.GetComponent<Glass>();
-        glass.Reset();
-        _customer.CompleteOrder(glass.Cocktail);
-        glass.Draggable.IsDropSuccessful = true;
+        if (eventData.pointerDrag.TryGetComponent<Glass>(out var glass))
+        {
+            glass.Reset();
+            _customer.CompleteOrder(glass.Cocktail);
+            glass.Draggable.IsDropSuccessful = true;
+        }
     }
 
 }

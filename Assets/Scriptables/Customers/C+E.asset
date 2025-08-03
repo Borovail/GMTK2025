@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e60f9dba6afe7da46a248047ba49fddf, type: 3}
+  m_Name: C+E
+  m_EditorClassIdentifier: 
+  Sprite: {fileID: 21300000, guid: e5d0142a795cd4c49a91559b1795aeb4, type: 3}
+  Cocktail: {fileID: 11400000, guid: e1c48fe38769d6a478807b4147c09c25, type: 2}

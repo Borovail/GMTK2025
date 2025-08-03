@@ -30,16 +30,18 @@ public class Shaker : MonoBehaviour, IDropHandler, IPointerClickHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        var draggable = eventData.pointerDrag.GetComponent<UIDraggable>();
-        _resources.Add(draggable.Resource);
-        draggable.DropSuccessful();
-        Shaked = false;
+        if (eventData.pointerDrag.TryGetComponent<UIDraggable>(out var draggable))
+        {
+            _resources.Add(draggable.Resource);
+            draggable.DropSuccessful();
+            Shaked = false;
+        }
     }
 
     public void ShakeAnimation(float duration = 1f, float magnitude = 0.05f)
     {
-        if(!Shaked && _coroutine==null)
-        _coroutine = StartCoroutine(ShakeCoroutine(duration, magnitude));
+        if (!Shaked && _coroutine == null)
+            _coroutine = StartCoroutine(ShakeCoroutine(duration, magnitude));
     }
 
     private IEnumerator ShakeCoroutine(float duration, float magnitude)

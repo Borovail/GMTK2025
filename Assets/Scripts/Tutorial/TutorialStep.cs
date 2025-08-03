@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -20,7 +21,8 @@ public abstract class ArrowTutorialStep : ITutorialStep
 
     protected Vector3 ArrowPosition;
     protected Quaternion ArrowRotation = Quaternion.identity;
-    protected string Text;
+    protected string TextForCurrentAction;
+    protected string TextForNextAction;
 
     public ArrowTutorialStep(Lookable lookable = null)
     {
@@ -36,7 +38,7 @@ public abstract class ArrowTutorialStep : ITutorialStep
     }
     protected virtual void ObjectLookedAt()
     {
-        PlayerUI.Instance.Text(true, Text);
+        PlayerUI.Instance.Text(true, TextForCurrentAction);
     }
 
     protected virtual void ObjectLookedAway()
@@ -49,7 +51,7 @@ public abstract class ArrowTutorialStep : ITutorialStep
     public virtual void EndStep()
     {
         Arrow.gameObject.SetActive(false);
-        PlayerUI.Instance.Text(false);
+        PlayerUI.Instance.Text(TextForNextAction != "", TextForNextAction);
         Obj.ObjectLookedAt.RemoveListener(ObjectLookedAt);
         Obj.ObjectLookedAway.RemoveListener(ObjectLookedAway);
     }
@@ -132,6 +134,13 @@ public class GhostTutorialStep : ITutorialStep
     {
         _draggables ??= _draggablesIEnumerable.ToList();
         _currentDraggable = _draggables[index++];
+        CircleManager.Instance.StartCoroutine(WaitForSeconds(0.5f));
+    }
+
+    private IEnumerator WaitForSeconds(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+
         CreateGhostDragLoop();
     }
 
