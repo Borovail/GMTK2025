@@ -15,6 +15,8 @@ public class UIDraggable : MonoBehaviour,
 
     [HideInInspector] public bool IsDropSuccessful;
 
+    public AudioClip sound;
+
     public void Initialize(Resource resource)
     {
         Resource = resource;
@@ -33,6 +35,7 @@ public class UIDraggable : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        AudioManager.Instance.PlaySfx(sound);
         PositionAfterDrag = transform.position;
         transform.SetAsLastSibling();
         _image.raycastTarget = false;
@@ -49,6 +52,7 @@ public class UIDraggable : MonoBehaviour,
         // var results = new List<RaycastResult>();
         // _canvas.GetComponent<GraphicRaycaster>().Raycast(pointerData, results);
 
+        AudioManager.Instance.PlaySfx(sound);
         transform.position = PositionAfterDrag;
         _image.raycastTarget = true;
     }

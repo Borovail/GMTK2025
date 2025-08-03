@@ -29,12 +29,26 @@ public class PlayerInteractor : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
+                    AudioManager.Instance.PlaySfx(AudioManager.Instance.Ingridient);
                     PlayerUI.Instance.Take(1, provider.Resource);
                     provider.IsTaken = true;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
+                    AudioManager.Instance.PlaySfx(AudioManager.Instance.Ingridient);
                     PlayerUI.Instance.Take(2, provider.Resource);
+                    provider.IsTaken = true;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    AudioManager.Instance.PlaySfx(AudioManager.Instance.Ingridient);
+                    PlayerUI.Instance.Take(3, provider.Resource);
+                    provider.IsTaken = true;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    AudioManager.Instance.PlaySfx(AudioManager.Instance.Ingridient);
+                    PlayerUI.Instance.Take(4, provider.Resource);
                     provider.IsTaken = true;
                 }
             }

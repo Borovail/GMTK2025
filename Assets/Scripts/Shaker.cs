@@ -77,5 +77,6 @@ public class Shaker : MonoBehaviour, IDropHandler, IPointerClickHandler
         Draggable.enabled = true;
         Shaked = true;
         _coroutine = null;
+        _resources.Clear();
     }
 }

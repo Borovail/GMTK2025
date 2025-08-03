@@ -35,6 +35,8 @@ public class CircleManager : Singleton<CircleManager>
             _customers[i] = new List<Customer>();
 
         SpawnCustomer(CustomerData[0]);
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
 
@@ -42,7 +44,7 @@ public class CircleManager : Singleton<CircleManager>
     {
         var index = _customerPositions.Count / 2 * _index + _customers[_index].Count;
         var customer = Instantiate(_customerPrefab, _customerPositions[index].position, _customerPositions[index].rotation);
-        customer.Initialize(customerData, 3);
+        customer.Initialize(customerData, UnityEngine.Random.Range(3, 10));
         customer.AddComponent<BoxCollider>();
         _customers[_index].Add(customer);
         customer.Id = _customers[_index].IndexOf(customer);
@@ -64,7 +66,8 @@ public class CircleManager : Singleton<CircleManager>
 
     private void OnOrderAccepted()
     {
-        _barriers[_index].SetTrigger(true);
+        if (_customers[_index].All(c => c.IsOrderAccepted))
+            _barriers[_index].SetTrigger(true);
     }
 
     public void SetBarrier(bool value)

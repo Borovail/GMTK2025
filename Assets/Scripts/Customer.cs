@@ -38,8 +38,8 @@ public class Customer : Lookable
         _cocktailImage.gameObject.SetActive(true);
         _circleCounterUi.gameObject.SetActive(true);
         _circleCounterUi.text = _circlesCount.ToString();
-        OrderAccepted?.Invoke();
         IsOrderAccepted = true;
+        OrderAccepted?.Invoke();
     }
 
     public void DecreaseCircleCount()
