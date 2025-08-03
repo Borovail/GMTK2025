@@ -6187,7 +6187,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d93636448ca49fb4cb54592809767ff9, type: 2}
   - {fileID: 11400000, guid: 9f0105e2d9957cb4eaa6570cf42d0586, type: 2}
   - {fileID: 11400000, guid: 561b40590a396d845a88fe2305c23397, type: 2}
-  MaxCustomersCount: 2
+  MaxCustomersCount: 20
   CustomersCount: 0
   CustomersServed: 0
 --- !u!4 &1257306074245312231
